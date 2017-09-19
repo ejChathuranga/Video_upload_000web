@@ -224,7 +224,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
      */
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
-            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080) {
+            if (size.getWidth() == size.getHeight() * 16 / 9 && size.getWidth() <= 1080) {
                 return size;
             }
         }
@@ -523,8 +523,6 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
             Surface recorderSurface = mMediaRecorder.getSurface();
             surfaces.add(recorderSurface);
             mPreviewBuilder.addTarget(recorderSurface);
-
-            String filePath = mNextVideoAbsolutePath;
 
             // Start a capture session
             // Once the session starts, we can update the UI and start recording
