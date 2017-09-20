@@ -40,7 +40,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.ejsoft.video_upload_000web.uploading.uploadConfig;
+import com.android.ejsoft.video_upload_000web.uploadManage.uploadConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -543,7 +543,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                             mMediaRecorder.start();
                         }
                     });
-                    //Toast.makeText(getActivity(), "Successfully camera started", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Successfully..! camera recording video", Toast.LENGTH_SHORT).show();
 
                     mMediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
                         @Override
@@ -551,7 +551,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
                                 //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
                                 stopRecordingVideo();
-                                sendFilePath();
+                                //sendFilePath();
                                 startRecordingVideo();
                             }
                         }
