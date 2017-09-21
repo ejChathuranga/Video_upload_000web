@@ -225,7 +225,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
      */
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
-            if (size.getWidth() == size.getHeight() * 16 / 9 && size.getWidth() <= 1080) {
+            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 720) {
                 return size;
             }
         }
