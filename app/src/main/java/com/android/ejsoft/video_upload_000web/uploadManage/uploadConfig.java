@@ -21,9 +21,9 @@ public class uploadConfig extends AsyncTask<String, Void, String> {
 
             @Override
             protected String doInBackground(String... params) {
-                String pf = params[0];
+                String filePath = params[0];
                 Upload u = new Upload();
-                String msg = u.uploadVideo(pf);
+                String msg = u.uploadVideo(filePath);
                 return msg;
             }
 

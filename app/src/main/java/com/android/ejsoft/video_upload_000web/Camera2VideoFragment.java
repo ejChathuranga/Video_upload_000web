@@ -40,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.ejsoft.video_upload_000web.dbManage.VS_dbActivity;
 import com.android.ejsoft.video_upload_000web.uploadManage.uploadConfig;
 
 import java.io.File;
@@ -551,7 +552,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
                                 //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
                                 stopRecordingVideo();
-                                //sendFilePath();
+                                sendFilePath();
                                 startRecordingVideo();
                             }
                         }
@@ -572,7 +573,11 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     }
 
     private void sendFilePath(){
-        new uploadConfig().execute(mNextVideoAbsolutePath);
+//        new uploadConfig().execute(mNextVideoAbsolutePath);
+        VS_dbActivity dbActivity = new VS_dbActivity(getActivity());
+        String msg = dbActivity.sendData(mNextVideoAbsolutePath);
+        Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
+
         mNextVideoAbsolutePath = null;
     }
 
@@ -682,6 +687,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
     private String getVideoFilePath() {
 //        final File dir = context.getExternalFilesDir(null);
+
 
         final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
@@ -795,9 +801,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
 
         Activity activity = getActivity();
         if (null != activity) {
-            Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
-                    Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
+            //Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Video saved:--------------->>>>>>> " + mNextVideoAbsolutePath);
         }
 
         startPreview();
