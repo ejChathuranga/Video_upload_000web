@@ -3,14 +3,17 @@ package com.android.ejsoft.video_upload_000web;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.android.ejsoft.video_upload_000web.dbManage.VS_dbActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,10 +32,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Checking network connection
         notifyNetCon();
+        checkFlag();
 
 
     }
 
+    private void checkFlag(){
+        VS_dbActivity dbActivity = new VS_dbActivity(getBaseContext());
+        String aa = dbActivity.viewFlagData();
+        Log.d("------------>>>>>>>>",""+aa);
+    }
 
     private void notifyNetCon(){
         netCon = isNetworkAvailable();

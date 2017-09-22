@@ -209,6 +209,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
     // for the camera handling methods. <openCamera>
     private Integer mSensorOrientation;
     private String mNextVideoAbsolutePath;
+    private Long mNextVideoName;
+
     private CaptureRequest.Builder mPreviewBuilder;
 
 
@@ -312,8 +314,10 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             Log.d(TAG, "tryAcquire");
-            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+            if (!mCameraOpenCloseLock.tryAcquire(5500, TimeUnit.MILLISECONDS)) {
+                Toast.makeText(activity, "Time out waiting to lock camera opening", Toast.LENGTH_SHORT).show();
                 throw new RuntimeException("Time out waiting to lock camera opening.");
+                
             }
             String cameraId = manager.getCameraIdList()[0];
 
@@ -575,9 +579,11 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
     private void sendFilePath(){
 //        new uploadConfig().execute(mNextVideoAbsolutePath);
         VS_dbActivity dbActivity = new VS_dbActivity(getActivity());
-        String msg = dbActivity.sendData(mNextVideoAbsolutePath);
-        Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
+        String msg = dbActivity.sendData(mNextVideoName);
+        //Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
+        Log.d("---------->>>>>>>>>>   ","Saved  ID:"+msg);
 
+        mNextVideoName = null;
         mNextVideoAbsolutePath = null;
     }
 
@@ -690,8 +696,10 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
 
         final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
+        long currentTimeMillis = System.currentTimeMillis();
+        getVideoFileName(currentTimeMillis);
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + System.currentTimeMillis() + ".mp4";
+                + currentTimeMillis + ".mp4";
 
         /**
          * File mediaStorageDir = new File(Environment
@@ -699,6 +707,11 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
          IMAGE_DIRECTORY_NAME);
          *
          * */
+    }
+
+    private Long getVideoFileName(Long aLong){
+        mNextVideoName = aLong;
+        return mNextVideoName;
     }
 
     private void closeCamera() {

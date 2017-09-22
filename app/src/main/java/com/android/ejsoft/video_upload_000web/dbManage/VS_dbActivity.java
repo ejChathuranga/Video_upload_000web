@@ -23,7 +23,7 @@ public class VS_dbActivity extends AppCompatActivity{
         dbHelp = new VS_dbConfig(c);
     }
 
-    public String sendData(String filePath) {
+    public String sendData(Long fileName) {
 
         long yourmilliseconds = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
@@ -34,58 +34,30 @@ public class VS_dbActivity extends AppCompatActivity{
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(Product.COLUMN_NAME_CLIP_NAME,filePath);
+        values.put(Product.COLUMN_NAME_CLIP_NAME,fileName);
         values.put(Product.COLUMN_NAME_FLAG,Boolean.FALSE);
 
         Long newRowID = db.insert(Product.TABLE_NAME,null,values);
 
         if(newRowID !=-1)
             return "Success ------>>>>>>>>"+newRowID;
-        else return "False";
+        else return "Failed to insert clip name into db";
 
     }
 
 
-    private void viewAllData(){
+    public String viewFlagData(){
+
         SQLiteDatabase db = dbHelp.getReadableDatabase();
-
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-                Product._ID,
-                Product.COLUMN_NAME_CLIP_NAME,
-                Product.COLUMN_NAME_FLAG
-        };
-
-        // Filter results WHERE "title" = 'My Title'
-        // String selection = FeedEntry.COLUMN_NAME_TITLE + " = ?";
-        // String[] selectionArgs = { "My Title" };
-
-        // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                Product.COLUMN_NAME_CLIP_NAME + " DESC";
-
-        Cursor cursor = db.query(
-                Product.TABLE_NAME,                     // The table to query
-                projection,                               // The columns to return
-                null,                                     // The columns for the WHERE clause
-                null,                                     // The values for the WHERE clause
-                null,                                     // group the rows
-                null,                                     // filter by row groups
-                sortOrder                                 // The sort order
-        );
-
-        StringBuffer str = new StringBuffer();
-        while (cursor.moveToNext()){
-            str.append("-----------------------------------------------------------\n");
-            str.append("ID: "+cursor.getString(0)+"\n");
-            str.append("Item: "+cursor.getString(1)+"\n");
-            str.append("Price: "+cursor.getString(2)+"\n");
-            str.append("------------------------------\n");
+//        db.execSQL("delete from "+ Product.TABLE_NAME);
+//        db.execSQL("vacuum");
+        String clipName="";
+        String countQuery = "SELECT * FROM "+Product.TABLE_NAME+" WHERE "+Product.COLUMN_NAME_FLAG+"=0 LIMIT 1";
+        Cursor cursor = db.rawQuery(countQuery, null);
+        if(cursor.moveToFirst()){
+            clipName = cursor.getString(cursor.getColumnIndex(Product.COLUMN_NAME_CLIP_NAME));
         }
-
-        System.out.println(str);
-//        tvShowData.setText(str);
+        return "********************************************************************"+clipName+".mp4";
 
     }
 
