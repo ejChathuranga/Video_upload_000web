@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by E J on 8/22/2017.
  */
-public class Camera2VideoFragment extends Fragment implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
+public class Cam2VideoFrag extends Fragment implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
     // to setup media recorder
     private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
@@ -74,7 +74,7 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     //getting reference for camera2 API
     private CameraDevice mCameraDevice;
 
-    private static final String TAG = "Camera2VideoFragment";
+    private static final String TAG = "Cam2VideoFrag";
     // for inner static class
     private static final int REQUEST_VIDEO_PERMISSIONS = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
@@ -212,8 +212,8 @@ public class Camera2VideoFragment extends Fragment implements View.OnClickListen
     private CaptureRequest.Builder mPreviewBuilder;
 
 
-    public static Camera2VideoFragment newInstance() {
-        return new Camera2VideoFragment();
+    public static Cam2VideoFrag newInstance() {
+        return new Cam2VideoFrag();
     }
 
     /**
