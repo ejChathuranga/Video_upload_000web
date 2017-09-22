@@ -693,14 +693,11 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
     private String getVideoFilePath() {
 //        final File dir = context.getExternalFilesDir(null);
-
-
         final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
         long currentTimeMillis = System.currentTimeMillis();
         getVideoFileName(currentTimeMillis);
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
                 + currentTimeMillis + ".mp4";
-
         /**
          * File mediaStorageDir = new File(Environment
          .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),

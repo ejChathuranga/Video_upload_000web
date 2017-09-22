@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkFlag(){
         VS_dbActivity dbActivity = new VS_dbActivity(getBaseContext());
         String aa = dbActivity.viewFlagData();
-        Log.d("------------>>>>>>>>",""+aa);
+        Log.d("Video file name"," flag = faulse :"+aa);
     }
 
     private void notifyNetCon(){

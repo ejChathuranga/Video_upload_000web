@@ -8,9 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.android.ejsoft.video_upload_000web.dbManage.VS_tableConfig.Product;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by E J on 9/20/2017.
  */
@@ -23,11 +20,9 @@ public class VS_dbActivity extends AppCompatActivity{
         dbHelp = new VS_dbConfig(c);
     }
 
-    public String sendData(Long fileName) {
+    public String sendData(Long aLong) {
 
-        long yourmilliseconds = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-        Date resultdate = new Date(yourmilliseconds);
+        String fileName = String.valueOf(aLong)+".mp4";
 
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelp.getWritableDatabase();
@@ -40,7 +35,7 @@ public class VS_dbActivity extends AppCompatActivity{
         Long newRowID = db.insert(Product.TABLE_NAME,null,values);
 
         if(newRowID !=-1)
-            return "Success ------>>>>>>>>"+newRowID;
+            return "Success ------>>>>>>>>"+fileName+" into "+newRowID;
         else return "Failed to insert clip name into db";
 
     }
@@ -49,15 +44,18 @@ public class VS_dbActivity extends AppCompatActivity{
     public String viewFlagData(){
 
         SQLiteDatabase db = dbHelp.getReadableDatabase();
-//        db.execSQL("delete from "+ Product.TABLE_NAME);
-//        db.execSQL("vacuum");
+
+//        SQLite Reset Primary Key Field
+//        db.execSQL("delete from "+Product.TABLE_NAME);
+//        db.execSQL("delete from sqlite_sequence where name='"+Product.TABLE_NAME+"'");
+
         String clipName="";
         String countQuery = "SELECT * FROM "+Product.TABLE_NAME+" WHERE "+Product.COLUMN_NAME_FLAG+"=0 LIMIT 1";
         Cursor cursor = db.rawQuery(countQuery, null);
         if(cursor.moveToFirst()){
             clipName = cursor.getString(cursor.getColumnIndex(Product.COLUMN_NAME_CLIP_NAME));
         }
-        return "********************************************************************"+clipName+".mp4";
+        return clipName;
 
     }
 
