@@ -20,9 +20,9 @@ public class VS_dbActivity extends AppCompatActivity{
         dbHelp = new VS_dbConfig(c);
     }
 
-    public String sendData(Long aLong) {
+    public String sendData(String aLong) {
 
-        String fileName = String.valueOf(aLong)+".mp4";
+        String fileName = aLong;
 
         // Gets the data repository in write mode
         SQLiteDatabase db = dbHelp.getWritableDatabase();

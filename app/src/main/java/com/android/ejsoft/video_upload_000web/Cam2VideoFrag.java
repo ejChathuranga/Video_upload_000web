@@ -209,7 +209,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
     // for the camera handling methods. <openCamera>
     private Integer mSensorOrientation;
     private String mNextVideoAbsolutePath;
-    private Long mNextVideoName;
+    private String mNextVideoName;
 
     private CaptureRequest.Builder mPreviewBuilder;
 
@@ -556,7 +556,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
                                 //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
                                 stopRecordingVideo();
-//                                sendFilePath();
+                                sendFilePath();
                                 startRecordingVideo();
                             }
                         }
@@ -587,75 +587,6 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         mNextVideoAbsolutePath = null;
     }
 
-
-    private void startRecordingVideo_2() {
-        if (null == mCameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
-            return;
-        }
-        try {
-            closePreviewSession();
-            setUpMediaRecorder();
-            SurfaceTexture texture = mTextureView.getSurfaceTexture();
-            assert texture != null;
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-            List<Surface> surfaces = new ArrayList<>();
-
-            // Set up Surface for the camera preview
-            Surface previewSurface = new Surface(texture);
-            surfaces.add(previewSurface);
-            mPreviewBuilder.addTarget(previewSurface);
-
-            // Set up Surface for the MediaRecorder
-            Surface recorderSurface = mMediaRecorder.getSurface();
-            surfaces.add(recorderSurface);
-            mPreviewBuilder.addTarget(recorderSurface);
-
-            // Start a capture session
-            // Once the session starts, we can update the UI and start recording
-            mCameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
-
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    mPreviewSession = cameraCaptureSession;
-                    updatePreview();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // UI
-                            mButtonVideo.setText(R.string.stop);
-                            mIsRecordingVideo = true;
-
-                            // Start recording
-                            mMediaRecorder.start();
-                        }
-                    });
-                    //Toast.makeText(getActivity(), "Successfully camera started", Toast.LENGTH_SHORT).show();
-
-                    mMediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
-                        @Override
-                        public void onInfo(MediaRecorder mr, int what, int extra) {
-                            if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED){
-                                Toast.makeText(getActivity(), "MEDIA_MAX_FILESIZE_REACHED", Toast.LENGTH_SHORT).show();
-//                                stopRecordingVideo();
-//                                startRecordingVideo();
-                            }
-                        }
-                    });
-                }
-
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    Activity activity = getActivity();
-                    if (null != activity) {
-                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, mBackgroundHandler);
-        } catch (CameraAccessException | IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void setUpMediaRecorder() throws IOException {
         final Activity activity = getActivity();
@@ -696,9 +627,9 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 //        final File dir = context.getExternalFilesDir(null);
         final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
         long currentTimeMillis = System.currentTimeMillis();
-        getVideoFileName(currentTimeMillis);
+        String fileName = getVideoFileName(currentTimeMillis);
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + currentTimeMillis + ".mp4";
+                + fileName;
         /**
          * File mediaStorageDir = new File(Environment
          .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
@@ -707,8 +638,9 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
          * */
     }
 
-    private Long getVideoFileName(Long aLong){
-        mNextVideoName = aLong;
+    private String getVideoFileName(Long aLong){
+        String fileName = String.valueOf(aLong)+ ".mp4";
+        mNextVideoName = fileName;
         return mNextVideoName;
     }
 
