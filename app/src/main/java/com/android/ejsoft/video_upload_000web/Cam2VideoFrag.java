@@ -314,7 +314,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             Log.d(TAG, "tryAcquire");
-            if (!mCameraOpenCloseLock.tryAcquire(5500, TimeUnit.MILLISECONDS)) {
+            if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 Toast.makeText(activity, "Time out waiting to lock camera opening", Toast.LENGTH_SHORT).show();
                 throw new RuntimeException("Time out waiting to lock camera opening.");
                 
@@ -556,7 +556,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
                                 //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
                                 stopRecordingVideo();
-                                sendFilePath();
+//                                sendFilePath();
                                 startRecordingVideo();
                             }
                         }
@@ -671,6 +671,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath.isEmpty()) {
             mNextVideoAbsolutePath = getVideoFilePath();
         }
+        Log.d("+++++++++++++++++","+++++++++NEXT PATH+++"+mNextVideoAbsolutePath);
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
         mMediaRecorder.setVideoEncodingBitRate(300000);
         mMediaRecorder.setVideoFrameRate(8);

@@ -8,22 +8,32 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.ejsoft.video_upload_000web.dbManage.VS_ReturnValues;
 import com.android.ejsoft.video_upload_000web.dbManage.VS_dbActivity;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
     private Boolean netCon;
+    private Boolean flagStatus;
+    private String fileName;
+    private int id ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        id = 0;
+        fileName ="";
+        flagStatus= false;
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, Cam2VideoFrag.newInstance())
@@ -39,8 +49,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkFlag(){
         VS_dbActivity dbActivity = new VS_dbActivity(getBaseContext());
-        String aa = dbActivity.viewFlagData();
-        Log.d("Video file name"," flag = faulse :"+aa);
+        VS_ReturnValues getValues = dbActivity.viewFlagStatus();
+        flagStatus = getValues.getFlag();
+        fileName = getValues.getFileName();
+        id =getValues.getId();
+        String filePath = getVideoFilePath(fileName);
+        Log.d(id+"-----------"+fileName,"-------------"+flagStatus);
+
+    }
+
+    private String getVideoFilePath(String fileName) {
+//        final File dir = context.getExternalFilesDir(null);
+        final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
+        return (dir == null ? "" : (dir.getAbsolutePath() + "/"))+ fileName;
+
     }
 
     private void notifyNetCon(){

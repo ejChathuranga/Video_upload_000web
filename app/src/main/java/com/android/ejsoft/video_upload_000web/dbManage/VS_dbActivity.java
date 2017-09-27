@@ -34,8 +34,10 @@ public class VS_dbActivity extends AppCompatActivity{
 
         Long newRowID = db.insert(Product.TABLE_NAME,null,values);
 
-        if(newRowID !=-1)
-            return "Success ------>>>>>>>>"+fileName+" into "+newRowID;
+        if(newRowID !=-1) {
+//            Log.d("Success ------>>>>>>>>" + fileName, "   into  " + newRowID);
+            return "Success ------>>>>>>>>" + fileName + " into " + newRowID;
+        }
         else return "Failed to insert clip name into db";
 
     }
@@ -57,6 +59,36 @@ public class VS_dbActivity extends AppCompatActivity{
         }
         return clipName;
 
+    }
+    public VS_ReturnValues viewFlagStatus(){
+
+        SQLiteDatabase db = dbHelp.getReadableDatabase();
+
+        int id=0;
+        String clipName= "";
+        Boolean flagStatus =false;
+        String countQuery = "SELECT * FROM "+Product.TABLE_NAME+" WHERE "+Product.COLUMN_NAME_FLAG+"=0 LIMIT 1";
+        Cursor cursor = db.rawQuery(countQuery, null);
+        if(cursor.moveToFirst()){
+            id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(Product._ID)));
+            clipName = cursor.getString(cursor.getColumnIndex(Product.COLUMN_NAME_CLIP_NAME));
+            flagStatus = true;
+        }
+//        rv.setFileName(clipName);
+//        rv.setFlag(flagStatus);
+        VS_ReturnValues rv = new VS_ReturnValues(id,clipName,flagStatus);
+        return rv;
+
+    }
+
+    public void deleteUploaded(){
+        SQLiteDatabase db = dbHelp.getWritableDatabase();
+        // Define 'where' part of query.
+        String selection = Product._ID + " = ?";
+        // Specify arguments in placeholder order.
+        //String[] selectionArgs = { txtID.getText().toString() };
+        // Issue SQL statement.
+        //db.delete(Product.TABLE_NAME, selection, selectionArgs);
     }
 
 }

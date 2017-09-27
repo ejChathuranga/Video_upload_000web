@@ -24,7 +24,7 @@ public class Upload {
 
     public String uploadVideo(String file) {
 
-        String fileName = file;
+        String filePath = file;
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -51,11 +51,11 @@ public class Upload {
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("ENCTYPE", "multipart/form-data");
             conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-            conn.setRequestProperty("myFile", fileName);
+            conn.setRequestProperty("myFile", filePath);
             dos = new DataOutputStream(conn.getOutputStream());
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + fileName + "\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + filePath + "\"" + lineEnd);
             dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();
