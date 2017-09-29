@@ -64,6 +64,10 @@ public class VS_dbActivity extends AppCompatActivity{
 
         SQLiteDatabase db = dbHelp.getReadableDatabase();
 
+
+//        db.execSQL("delete from "+Product.TABLE_NAME);
+//        db.execSQL("delete from sqlite_sequence where name='"+Product.TABLE_NAME+"'");
+
         int id=0;
         String clipName= "";
         Boolean flagStatus =false;
@@ -81,14 +85,16 @@ public class VS_dbActivity extends AppCompatActivity{
 
     }
 
-    public void deleteUploaded(){
+    public String deleteUploadedFileName(String id){
         SQLiteDatabase db = dbHelp.getWritableDatabase();
         // Define 'where' part of query.
         String selection = Product._ID + " = ?";
         // Specify arguments in placeholder order.
-        //String[] selectionArgs = { txtID.getText().toString() };
+        String[] selectionArgs = { id };
         // Issue SQL statement.
-        //db.delete(Product.TABLE_NAME, selection, selectionArgs);
+        db.delete(Product.TABLE_NAME, selection, selectionArgs);
+
+        return "REMOVED: "+id;
     }
 
 }

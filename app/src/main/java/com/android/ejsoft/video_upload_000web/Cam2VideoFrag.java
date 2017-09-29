@@ -387,7 +387,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                             Activity activity = getActivity();
                             if (null != activity) {
-                                Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                                Log.d("pri void startPreview()"," createCaptureSession");
+                                Toast.makeText(activity, "Failed in startPreview() ", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, mBackgroundHandler);
@@ -557,6 +558,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                                 //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
                                 stopRecordingVideo();
                                 sendFilePath();
+                                mNextVideoName = null;
+                                mNextVideoAbsolutePath = null;
                                 startRecordingVideo();
                             }
                         }
@@ -582,9 +585,6 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         String msg = dbActivity.sendData(mNextVideoName);
         //Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
         Log.d("---------->>>>>>>>>>   ","Saved  ID:"+msg);
-
-        mNextVideoName = null;
-        mNextVideoAbsolutePath = null;
     }
 
 
@@ -594,7 +594,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
             return;
         }
 
-        mMediaRecorder.setMaxDuration(10000);
+        mMediaRecorder.setMaxDuration(5000);
 //        mMediaRecorder.setMaxFileSize(5000000);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
@@ -602,10 +602,10 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath.isEmpty()) {
             mNextVideoAbsolutePath = getVideoFilePath();
         }
-        Log.d("+++++++++++++++++","+++++++++NEXT PATH+++"+mNextVideoAbsolutePath);
+        Log.d("++IN MEDIA RECORDER++++","+++++++++NEXT PATH+++"+mNextVideoAbsolutePath);
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
-        mMediaRecorder.setVideoEncodingBitRate(300000);
-        mMediaRecorder.setVideoFrameRate(8);
+        mMediaRecorder.setVideoEncodingBitRate(90000);
+        mMediaRecorder.setVideoFrameRate(4);
 //        mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoSize(320,240);
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
@@ -628,19 +628,12 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         final File dir = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
         long currentTimeMillis = System.currentTimeMillis();
         String fileName = getVideoFileName(currentTimeMillis);
-        return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + fileName;
-        /**
-         * File mediaStorageDir = new File(Environment
-         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-         IMAGE_DIRECTORY_NAME);
-         *
-         * */
+        return (dir == null ? "" : (dir.getAbsolutePath() + "/")) + fileName;
+
     }
 
     private String getVideoFileName(Long aLong){
-        String fileName = String.valueOf(aLong)+ ".mp4";
-        mNextVideoName = fileName;
+        mNextVideoName = String.valueOf(aLong)+ ".mp4";
         return mNextVideoName;
     }
 

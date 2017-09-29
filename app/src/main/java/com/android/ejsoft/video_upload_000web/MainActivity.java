@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,14 +18,23 @@ import android.widget.Toast;
 
 import com.android.ejsoft.video_upload_000web.dbManage.VS_ReturnValues;
 import com.android.ejsoft.video_upload_000web.dbManage.VS_dbActivity;
+import com.android.ejsoft.video_upload_000web.uploadManage.uploadConfig;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int mInterval = 5000; // 5 seconds by default, can be changed later
+    private Handler mHandler;
+
+
+    public uploadConfig uv;
+    VS_dbActivity deleteVsDbActivity  = new VS_dbActivity(this);
+
     private Boolean netCon;
     private Boolean flagStatus;
     private String fileName;
+    private String selectedPath;
     private int id ;
 
     @Override
@@ -31,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        id = 0;
-        fileName ="";
-        flagStatus= false;
+        mHandler = new Handler();
+        uv = new uploadConfig();
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, Cam2VideoFrag.newInstance())
@@ -43,19 +53,86 @@ public class MainActivity extends AppCompatActivity {
         // Checking network connection
         notifyNetCon();
         checkFlag();
+        startRepeatingTask();
 
 
     }
 
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                checkStatus(); //this function can change value of mInterval.
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                mHandler.postDelayed(mStatusChecker, mInterval);
+            }
+        }
+    };
+
+
+    public void checkStatus(){
+
+        if(uv.getStatus() == AsyncTask.Status.PENDING){
+            // My AsyncTask has not started yet
+            Log.d("---------------","------------: PENDING");
+            uv = null;
+            checkFlag();
+        }
+
+        if(uv.getStatus() == AsyncTask.Status.RUNNING){
+            // My AsyncTask is currently doing work in doInBackground()
+            Log.d("---------------","------------: RUNNING");
+        }
+
+        if(uv.getStatus() == AsyncTask.Status.FINISHED){
+            // My AsyncTask is done and onPostExecute was called
+            Toast.makeText(this, "UPLOAD COMPLETE", Toast.LENGTH_SHORT).show();
+            deleteSendClipNameFromDB();
+
+            Log.d("---------------","------------: FINISHED");
+        }
+    }
+
+    private void deleteSendClipNameFromDB() {
+        String dd = deleteVsDbActivity.deleteUploadedFileName(String.valueOf(id));
+        Log.d("deleteSendClip","------======>>>>>"+dd);
+        uv = null;
+        id = 0;
+        fileName = null;
+        flagStatus = null;
+        selectedPath = null;
+        checkFlag();
+    }
+
+
     private void checkFlag(){
+
+        uv = new uploadConfig(); // to continue checkStatus method we have to create this object here
+
         VS_dbActivity dbActivity = new VS_dbActivity(getBaseContext());
-        VS_ReturnValues getValues = dbActivity.viewFlagStatus();
+        VS_ReturnValues getValues = dbActivity.viewFlagStatus(); // creating object using getter and setter
         flagStatus = getValues.getFlag();
         fileName = getValues.getFileName();
         id =getValues.getId();
-        String filePath = getVideoFilePath(fileName);
-        Log.d(id+"-----------"+fileName,"-------------"+flagStatus);
+        selectedPath = getVideoFilePath(fileName);
+        if(flagStatus==true){
+            uploadVideo(selectedPath);
+            Log.d(id+"-----------"+fileName,"-------------"+flagStatus);
+        }
+        else{
+            Toast.makeText(this, "All The files are uploadede", Toast.LENGTH_SHORT).show();
+            Log.d("=====++++++>>>>>>>>>>>","All The files are uploadede");
 
+        }
+//        Toast.makeText(getBaseContext(), id+"%%%%%"+fileName+"%%%"+flagStatus, Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void uploadVideo(String path) {
+        uv.execute(path);
+        selectedPath = null;
     }
 
     private String getVideoFilePath(String fileName) {
@@ -100,4 +177,26 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        stopRepeatingTask();
+
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        stopRepeatingTask();
+    }
+
+    void startRepeatingTask() {
+        mStatusChecker.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mStatusChecker);
+    }
+
 }
