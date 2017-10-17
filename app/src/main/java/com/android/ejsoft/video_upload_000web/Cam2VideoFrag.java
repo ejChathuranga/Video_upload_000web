@@ -546,7 +546,22 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     mPreviewSession = cameraCaptureSession;
-                    updatePreview();
+                    try{
+                        Timer timer = new Timer();
+                        TimerTask timerTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                {
+                                    updatePreview();
+                                }
+                            }
+                        };
+                        timer.schedule(timerTask,320);
+                    }catch(RuntimeException e){
+                        Log.e("----------------","---->>>>>>>>>"+e);
+                        e.printStackTrace();
+                    }
+
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -558,21 +573,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                             // Start recording
                             mMediaRecorder.start();
 
-                            try{
-                                Timer timer = new Timer();
-                                TimerTask timerTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        {
-                                            startPreview();
-                                        }
-                                    }
-                                };
-                                timer.schedule(timerTask,30);
-                            }catch(RuntimeException e){
-                                Log.e("----------------","---->>>>>>>>>"+e);
-                                e.printStackTrace();
-                            }
+
                         }
                     });
 //                    Toast.makeText(getActivity(), "Successfully..! camera recording video", Toast.LENGTH_SHORT).show();
@@ -582,6 +583,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                         public void onInfo(MediaRecorder mr, int what, int extra) {
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
 //                              Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
+
                                 onClosed(mPreviewSession);
                             }
                         }
@@ -611,6 +613,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
     private void repeatCap(){
 //      final Handler mTimerHandler = new Handler(Looper.getMainLooper());
+
         mIsRecordingVideo = false;
         // Stop recording
         try {
@@ -628,57 +631,32 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
         mMediaRecorder.reset();
 
-//        try{
-//            Timer timer = new Timer();
-//            TimerTask timerTask = new TimerTask() {
-//                @Override
-//                public void run() {
-//                    {
-//                    }
-//                }
-//            };
-//            timer.schedule(timerTask,30);
-//        }catch(RuntimeException e){
-//            Log.e("----------------","---->>>>>>>>>"+e);
-//            e.printStackTrace();
-//        }
+        startPreview();
 
-        Activity activity = getActivity();
-        if (null != activity) {
-            //Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Video saved:--------------->>>>>>> " + mNextVideoAbsolutePath);
-        }
+        sendFilePath();
 
-        ////////////////////////////////////////////////////////////////////////////////////////
-
-//        try{
-//            Timer timer = new Timer();
-//            TimerTask timerTask = new TimerTask() {
-//                @Override
-//                public void run() {
-//                    {
-//                        startPreview();
-//                    }
-//                }
-//            };
-//            timer.schedule(timerTask,30);
-//        }catch(RuntimeException e){
-//            Log.e("----------------","---->>>>>>>>>"+e);
-//            e.printStackTrace();
-//        }
-
-//
-//        startPreview();
+        mNextVideoName = null;
+        mNextVideoAbsolutePath = null;
 
         /**
          * Now let START the video again
          */
 
-        sendFilePath();
-        mNextVideoName = null;
-        mNextVideoAbsolutePath = null;
-
-        startRecordingVideo();
+        try{
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    {
+                        startRecordingVideo();
+                    }
+                }
+            };
+            timer.schedule(timerTask,510);
+        }catch(RuntimeException e){
+            Log.e("----------------","---->>>>>>>>>"+e);
+            e.printStackTrace();
+        }
 
     }
     private void sendFilePath(){

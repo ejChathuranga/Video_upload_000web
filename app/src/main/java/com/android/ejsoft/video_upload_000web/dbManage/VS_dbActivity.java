@@ -85,6 +85,7 @@ public class VS_dbActivity extends AppCompatActivity{
 //        rv.setFileName(clipName);
 //        rv.setFlag(flagStatus);
         VS_ReturnValues rv = new VS_ReturnValues(id,clipName,flagStatus);
+        db.close();
         return rv;
 
     }
@@ -97,7 +98,7 @@ public class VS_dbActivity extends AppCompatActivity{
         String[] selectionArgs = { id };
         // Issue SQL statement.
         db.delete(Product.TABLE_NAME, selection, selectionArgs);
-
+        db.close();
         return "REMOVED: "+id;
     }
 
