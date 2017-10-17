@@ -676,7 +676,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
         mMediaRecorder = new MediaRecorder();
 
-        mMediaRecorder.setMaxDuration(5000);
+        mMediaRecorder.setMaxDuration(30000);
 //        mMediaRecorder.setMaxFileSize(5000000);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
