@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mHandler = new Handler();
-        uv = new uploadConfig();
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, Cam2VideoFrag.newInstance())
                     .commit();
         }
+
 
         // Checking network connection
         notifyNetCon();
@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void uploadVideo(String path) {
+
+        uv = new uploadConfig();
         uv.execute(path);
         selectedPath = null;
     }

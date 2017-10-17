@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
@@ -227,7 +228,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
      */
     private static Size chooseVideoSize(Size[] choices) {
         for (Size size : choices) {
-            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 720) {
+            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 480) {
+//                Log.w("<<<<<-----------","----------->>>>>"+size);
                 return size;
             }
         }
@@ -256,11 +258,14 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
             if (option.getHeight() == option.getWidth() * h / w &&
                     option.getWidth() >= width && option.getHeight() >= height) {
                 bigEnough.add(option);
+//                Log.w("---------","-----))))))"+bigEnough.add(option));  //== true
             }
         }
 
         // Pick the smallest of those, assuming we found any
         if (bigEnough.size() > 0) {
+//            Size s= Collections.min(bigEnough, new CompareSizesByArea());
+//            Log.w("----------------","----------->>>>>"+s); // return 1440*1080
             return Collections.min(bigEnough, new CompareSizesByArea());
         } else {
             Log.e(TAG, "Couldn't find any suitable preview size");
@@ -335,12 +340,13 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+//                mTextureView.setAspectRatio(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+                mTextureView.setAspectRatio(mVideoSize.getWidth(), mVideoSize.getHeight());
             } else {
-                mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
+//                mTextureView.setAspectRatio(mPreviewSize.getHeight(), mPreviewSize.getWidth());
+                mTextureView.setAspectRatio(mVideoSize.getHeight(), mVideoSize.getWidth());
             }
             configureTransform(width, height);
-            mMediaRecorder = new MediaRecorder();
             manager.openCamera(cameraId, mStateCallback, null);
 
         } catch (InterruptedException e) {
@@ -361,14 +367,14 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
     private void startPreview(){
         if (null == mCameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
-            // Toast.makeText(getContext(), "-->>> This is the error comes <<<<----", Toast.LENGTH_SHORT).show();
             return;
         }
         try{
             closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+//            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            texture.setDefaultBufferSize(mVideoSize.getWidth(), mVideoSize.getHeight());
             mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
             Surface previewSurface = new Surface(texture);
@@ -387,13 +393,16 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                             Activity activity = getActivity();
                             if (null != activity) {
-                                Log.d("pri void startPreview()"," createCaptureSession");
+                                Log.e("pri void startPreview()", " createCaptureSession");
                                 Toast.makeText(activity, "Failed in startPreview() ", Toast.LENGTH_SHORT).show();
                             }
                         }
+
                     }, mBackgroundHandler);
 
+
         } catch (CameraAccessException e) {
+            Log.e("startPreview ---:>> ","----->>>>>>"+e);
             e.printStackTrace();
         }
     }
@@ -516,7 +525,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
             setUpMediaRecorder();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+//            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            texture.setDefaultBufferSize(mVideoSize.getWidth(), mVideoSize.getHeight());
             mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             List<Surface> surfaces = new ArrayList<>();
 
@@ -530,14 +540,14 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
             surfaces.add(recorderSurface);
             mPreviewBuilder.addTarget(recorderSurface);
 
-            // Start a capture session
-            // Once the session starts, we can update the UI and start recording
+
             mCameraDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
 
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                     mPreviewSession = cameraCaptureSession;
                     updatePreview();
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -547,20 +557,32 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
                             // Start recording
                             mMediaRecorder.start();
+
+                            try{
+                                Timer timer = new Timer();
+                                TimerTask timerTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        {
+                                            startPreview();
+                                        }
+                                    }
+                                };
+                                timer.schedule(timerTask,30);
+                            }catch(RuntimeException e){
+                                Log.e("----------------","---->>>>>>>>>"+e);
+                                e.printStackTrace();
+                            }
                         }
                     });
-                    //Toast.makeText(getActivity(), "Successfully..! camera recording video", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "Successfully..! camera recording video", Toast.LENGTH_SHORT).show();
 
                     mMediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
                         @Override
                         public void onInfo(MediaRecorder mr, int what, int extra) {
                             if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
-                                //Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
-                                stopRecordingVideo();
-                                sendFilePath();
-                                mNextVideoName = null;
-                                mNextVideoAbsolutePath = null;
-                                startRecordingVideo();
+//                              Toast.makeText(getActivity(), "MAX_DURATION_REACHED", Toast.LENGTH_SHORT).show();
+                                onClosed(mPreviewSession);
                             }
                         }
                     });
@@ -570,20 +592,100 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
                     Activity activity = getActivity();
                     if (null != activity) {
-                        Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Failed in ConfigureFailed", Toast.LENGTH_SHORT).show();
                     }
+                }
+
+                @Override
+                public void onClosed(@NonNull CameraCaptureSession session) {
+                    repeatCap();
+                    super.onClosed(session);
                 }
             }, mBackgroundHandler);
         } catch (CameraAccessException | IOException e) {
+            Log.e("=======================","=======================");
             e.printStackTrace();
+            Log.e("=======================","=======================");
         }
     }
 
+    private void repeatCap(){
+//      final Handler mTimerHandler = new Handler(Looper.getMainLooper());
+        mIsRecordingVideo = false;
+        // Stop recording
+        try {
+            mPreviewSession.stopRepeating();
+            mPreviewSession.abortCaptures();
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            mMediaRecorder.stop();
+        }catch (RuntimeException ex){
+            ex.printStackTrace();
+        }
+
+        mMediaRecorder.reset();
+
+//        try{
+//            Timer timer = new Timer();
+//            TimerTask timerTask = new TimerTask() {
+//                @Override
+//                public void run() {
+//                    {
+//                    }
+//                }
+//            };
+//            timer.schedule(timerTask,30);
+//        }catch(RuntimeException e){
+//            Log.e("----------------","---->>>>>>>>>"+e);
+//            e.printStackTrace();
+//        }
+
+        Activity activity = getActivity();
+        if (null != activity) {
+            //Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Video saved:--------------->>>>>>> " + mNextVideoAbsolutePath);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+
+//        try{
+//            Timer timer = new Timer();
+//            TimerTask timerTask = new TimerTask() {
+//                @Override
+//                public void run() {
+//                    {
+//                        startPreview();
+//                    }
+//                }
+//            };
+//            timer.schedule(timerTask,30);
+//        }catch(RuntimeException e){
+//            Log.e("----------------","---->>>>>>>>>"+e);
+//            e.printStackTrace();
+//        }
+
+//
+//        startPreview();
+
+        /**
+         * Now let START the video again
+         */
+
+        sendFilePath();
+        mNextVideoName = null;
+        mNextVideoAbsolutePath = null;
+
+        startRecordingVideo();
+
+    }
     private void sendFilePath(){
 //        new uploadConfig().execute(mNextVideoAbsolutePath);
         VS_dbActivity dbActivity = new VS_dbActivity(getActivity());
         String msg = dbActivity.sendData(mNextVideoName);
-        //Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "db status : "+msg, Toast.LENGTH_SHORT).show();
         Log.d("---------->>>>>>>>>>   ","Saved  ID:"+msg);
     }
 
@@ -593,6 +695,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         if (null == activity) {
             return;
         }
+
+        mMediaRecorder = new MediaRecorder();
 
         mMediaRecorder.setMaxDuration(5000);
 //        mMediaRecorder.setMaxFileSize(5000000);
@@ -604,8 +708,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         }
         Log.d("++IN MEDIA RECORDER++++","+++++++++NEXT PATH+++"+mNextVideoAbsolutePath);
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
-        mMediaRecorder.setVideoEncodingBitRate(90000);
-        mMediaRecorder.setVideoFrameRate(4);
+        mMediaRecorder.setVideoEncodingBitRate(9000000);
+        mMediaRecorder.setVideoFrameRate(32);
 //        mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoSize(320,240);
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
@@ -714,25 +818,42 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
 
     private void stopRecordingVideo() {
         // UI
+        final Handler mTimerHandler = new Handler(Looper.getMainLooper());
+
+
+        sendFilePath();
         mIsRecordingVideo = false;
         mButtonVideo.setText(R.string.record);
         // Stop recording
         try {
             mPreviewSession.stopRepeating();
             mPreviewSession.abortCaptures();
-        } catch (CameraAccessException e) {
+
+        } catch (CameraAccessException e ){
+            //e.printStackTrace();
+        }
+
+        try{
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    mTimerHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMediaRecorder.stop();
+                            mMediaRecorder.reset();
+                        }
+                    });
+                }
+            };
+            timer.schedule(timerTask,90);
+        }catch(RuntimeException e){
+            Log.e("----------------","---->>>>>>>>>"+e);
             e.printStackTrace();
         }
 
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                mMediaRecorder.stop();
-                mMediaRecorder.reset();
-            }
-        };
-        timer.schedule(timerTask,30);
+
 
 
         Activity activity = getActivity();

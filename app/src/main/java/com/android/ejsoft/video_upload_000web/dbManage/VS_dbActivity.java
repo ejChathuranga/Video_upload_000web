@@ -36,9 +36,13 @@ public class VS_dbActivity extends AppCompatActivity{
 
         if(newRowID !=-1) {
 //            Log.d("Success ------>>>>>>>>" + fileName, "   into  " + newRowID);
+            db.close();
             return "Success ------>>>>>>>>" + fileName + " into " + newRowID;
         }
-        else return "Failed to insert clip name into db";
+        else {
+            db.close();
+            return "Failed to insert clip name into db";
+        }
 
     }
 
