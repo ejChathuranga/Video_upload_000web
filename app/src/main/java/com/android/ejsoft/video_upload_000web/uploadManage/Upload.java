@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class Upload {
 
-    public static final String UPLOAD_URL= "https://onemarket.000webhostapp.com/videoStream/upload.php";
+    public static final String UPLOAD_URL= "https://videoplayer.000webhostapp.com/videoPlayer/upload.php";
 
     private int serverResponseCode;
 

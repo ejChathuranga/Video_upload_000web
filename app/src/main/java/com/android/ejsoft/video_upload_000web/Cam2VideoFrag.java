@@ -686,8 +686,8 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         }
         Log.d("++IN MEDIA RECORDER++++","+++++++++NEXT PATH+++"+mNextVideoAbsolutePath);
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
-        mMediaRecorder.setVideoEncodingBitRate(9000000);
-        mMediaRecorder.setVideoFrameRate(32);
+        mMediaRecorder.setVideoEncodingBitRate(90000);
+        mMediaRecorder.setVideoFrameRate(16);
 //        mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoSize(320,240);
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
