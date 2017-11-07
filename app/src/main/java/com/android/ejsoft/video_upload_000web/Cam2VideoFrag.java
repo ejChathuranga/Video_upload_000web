@@ -322,7 +322,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 Toast.makeText(activity, "Time out waiting to lock camera opening", Toast.LENGTH_SHORT).show();
                 throw new RuntimeException("Time out waiting to lock camera opening.");
-                
+
             }
             String cameraId = manager.getCameraIdList()[0];
 
@@ -393,7 +393,7 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
                         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                             Activity activity = getActivity();
                             if (null != activity) {
-                                Log.e("pri void startPreview()", " createCaptureSession");
+                                Log.e("pri void startPreview()", "error in createCaptureSession while running startPreview");
                                 Toast.makeText(activity, "Failed in startPreview() ", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -497,9 +497,33 @@ public class Cam2VideoFrag extends Fragment implements View.OnClickListener, Fra
         switch (view.getId()) {
             case R.id.video: {
                 if (mIsRecordingVideo) {
-                    stopRecordingVideo();
+                    Timer timer = new Timer();
+                    TimerTask timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        stopRecordingVideo();
+                                    }
+                                });
+                            }
+                        }
+                    };
+                    timer.schedule(timerTask,500);
                 } else {
-                    startRecordingVideo();
+                    Timer timer = new Timer();
+                    TimerTask timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            {
+                                startRecordingVideo();
+                            }
+                        }
+                    };
+                    timer.schedule(timerTask,500);
                 }
                 break;
             }
