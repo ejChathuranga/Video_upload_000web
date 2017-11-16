@@ -14,21 +14,21 @@
         android:layout_alignParentTop="true" />
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/material_design_android_floating_action_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/floating_action_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="29dp"
         fab:menu_animationDelayPerItem="55"
-        fab:menu_backgroundColor="@android:color/transparent"
+        fab:menu_backgroundColor="?android:attr/textColorHint"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#da3c2f"
-        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorNormal="@android:color/holo_blue_dark"
+        fab:menu_colorPressed="@android:color/holo_blue_bright"
         fab:menu_colorRipple="#99d4d4d4"
         fab:menu_fab_label="Floating Action Menu"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/fab_add"
+        fab:menu_icon="@drawable/ej_crd_ls_cam_settings"
         fab:menu_labels_colorNormal="#333"
         fab:menu_labels_colorPressed="#444"
         fab:menu_labels_colorRipple="#66efecec"
@@ -52,21 +52,21 @@
         fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item1"
+            android:id="@+id/floating_action_menu_item1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 1"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item2"
+            android:id="@+id/floating_action_menu_item2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 2"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item3"
+            android:id="@+id/floating_action_menu_item3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 3"
