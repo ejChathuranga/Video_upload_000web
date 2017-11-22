@@ -17,11 +17,10 @@
         android:id="@+id/floating_action_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="29dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         fab:menu_animationDelayPerItem="55"
-        fab:menu_backgroundColor="?android:attr/textColorHint"
+        fab:menu_backgroundColor="?android:attr/tooltipBackgroundColor"
         fab:menu_buttonSpacing="0dp"
         fab:menu_colorNormal="@android:color/holo_blue_dark"
         fab:menu_colorPressed="@android:color/holo_blue_bright"
@@ -52,21 +51,21 @@
         fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item1"
+            android:id="@+id/floating_action_menu_item1_High"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 1"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item2"
+            android:id="@+id/floating_action_menu_item2_Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 2"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/floating_action_menu_item3"
+            android:id="@+id/floating_action_menu_item3_Low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="Menu Item 3"
