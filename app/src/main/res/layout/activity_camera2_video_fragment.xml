@@ -20,7 +20,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         fab:menu_animationDelayPerItem="55"
-        fab:menu_backgroundColor="?android:attr/tooltipBackgroundColor"
+        fab:menu_backgroundColor="#99d4d4d4"
         fab:menu_buttonSpacing="0dp"
         fab:menu_colorNormal="@android:color/holo_blue_dark"
         fab:menu_colorPressed="@android:color/holo_blue_bright"
