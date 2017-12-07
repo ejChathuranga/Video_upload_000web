@@ -25,7 +25,7 @@
         fab:menu_colorNormal="@android:color/holo_blue_dark"
         fab:menu_colorPressed="@android:color/holo_blue_bright"
         fab:menu_colorRipple="#99d4d4d4"
-        fab:menu_fab_label="Floating Action Menu"
+        fab:menu_fab_label="Choose video quality"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/ej_crd_ls_cam_settings"
         fab:menu_labels_colorNormal="#333"
@@ -54,21 +54,24 @@
             android:id="@+id/floating_action_menu_item1_High"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Menu Item 1"
+            android:src="@drawable/ls_video_q_h"
+            fab:fab_label="High"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/floating_action_menu_item2_Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Menu Item 2"
+            android:src="@drawable/ls_video_q_m"
+            fab:fab_label="Medium"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/floating_action_menu_item3_Low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Menu Item 3"
+            android:src="@drawable/ls_video_q_l"
+            fab:fab_label="Low"
             fab:fab_size="mini" />
     </com.github.clans.fab.FloatingActionMenu>
 
