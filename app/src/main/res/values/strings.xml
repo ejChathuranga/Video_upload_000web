@@ -7,6 +7,8 @@
     <string name="permission_network">Please turn on your internet connection</string>
     <string name="permission_network_title">Cann\'t access network</string>
     <string name="camera_error">This device doesn\'t support Camera2 API</string>
+    <string name="mission_reg">please fill the form to add new mission</string>
+
     <string name="intro_message">
         <b>Video Streaming</b>\n\n
         <i><b>• </b>Only work for <u>LANDSCAPE</u> mode</i>\n

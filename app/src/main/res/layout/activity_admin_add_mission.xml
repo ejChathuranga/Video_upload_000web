@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.ejsoft.video_upload_000web.admin.admin_addMission">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/crd_logo" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/mission_reg"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etMissionName"
+                    android:layout_width="264dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="Enter Mission Name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/etUnit"
+                    android:layout_width="264dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="Enter Unit name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/etDate"
+                    android:layout_width="265dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Enter Date"
+                    android:inputType="date"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Add Mission" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

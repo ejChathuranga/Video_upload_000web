@@ -2,20 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.ejsoft.video_upload_000web">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_VIDEO" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-feature android:name="android.hardware.camera2.full" />
+
     <meta-data
         android:name="android.max_aspect"
         android:value="3.0" />
-
 
     <application
         android:allowBackup="true"
@@ -24,24 +24,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="landscape">
-            <!--android:theme="@android:style/Theme.NoTitleBar">-->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+
         </activity>
-
-        <activity android:name=".Cam2VideoFrag"
+        <activity
+            android:name=".Cam2VideoFrag"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
-            <!--android:theme="@android:style/Theme.NoTitleBar"-->
+
+            <!-- android:theme="@android:style/Theme.NoTitleBar" -->
         </activity>
+
         <receiver
             android:name=".InternetConnection_Receiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
 
                 <!-- Intent filters for broadcast receiver -->
@@ -50,6 +50,14 @@
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".admin.admin_addMission">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
