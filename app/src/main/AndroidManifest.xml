@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature android:name="android.hardware.camera2.full" />
 
@@ -51,14 +52,18 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".admin.admin_addMission">
+        <activity android:name=".admin.admin_addMission"></activity>
+        <activity android:name=".admin.admin_addSoldiers">
+
+        </activity>
+        <activity
+            android:name=".liveStream_Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".admin.admin_addSoldiers"></activity>
     </application>
 
 </manifest>

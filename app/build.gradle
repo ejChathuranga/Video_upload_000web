@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    useLibrary 'org.apache.http.legacy'
     compileSdkVersion 25
     buildToolsVersion "27.0.1"
     defaultConfig {
@@ -36,4 +37,6 @@ dependencies {
 
     compile 'com.android.support:design:25.1.0'
     compile 'com.github.clans:fab:1.6.4'
+
+    compile 'com.googlecode.json-simple:json-simple:1.1'
 }

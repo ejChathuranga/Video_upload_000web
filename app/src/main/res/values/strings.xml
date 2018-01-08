@@ -8,6 +8,7 @@
     <string name="permission_network_title">Cann\'t access network</string>
     <string name="camera_error">This device doesn\'t support Camera2 API</string>
     <string name="mission_reg">please fill the form to add new mission</string>
+    <string name="soldier_reg">please fill the form to add new soldier</string>
 
     <string name="intro_message">
         <b>Video Streaming</b>\n\n
@@ -16,4 +17,9 @@
         <i><b>• </b>You can change the resolution of video</i>\n
         <i><b>• </b>Changing video size cause for streaming</i>\n
     </string>
+
+    <string-array name="spinnerStatus">
+        <item>Admin</item>
+        <item>Soldier</item>
+    </string-array>
 </resources>
