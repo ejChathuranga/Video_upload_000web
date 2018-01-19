@@ -49,14 +49,6 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/etName"
-                    android:layout_width="264dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Name"
-                    android:inputType="textPersonName" />
-
-                <EditText
                     android:id="@+id/etUsername"
                     android:layout_width="264dp"
                     android:layout_height="wrap_content"
@@ -71,6 +63,14 @@
                     android:ems="10"
                     android:hint="Password"
                     android:inputType="textPassword" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="264dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
 
                 <Spinner
                     android:id="@+id/spinnerStatus"

@@ -75,6 +75,7 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
+            android:text="zzzz"
             android:textColor="@android:color/white"
             android:textColorHint="?android:attr/colorButtonNormal" />
 
