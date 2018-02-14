@@ -26,7 +26,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/background_light"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,54 +50,54 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="228dp"
+    android:layout_width="228dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="40dp"
+    android:layout_marginTop="130dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="130dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:alpha="50"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/white"
+        android:textColorHint="?android:attr/colorButtonNormal" />
 
-        <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:alpha="50"
-            android:ems="10"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/white"
-            android:textColorHint="?android:attr/colorButtonNormal" />
+    <EditText
+        android:id="@+id/etPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="50"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:text="zzzz"
+        android:textColor="@android:color/white"
+        android:textColorHint="?android:attr/colorButtonNormal" />
 
-        <EditText
-            android:id="@+id/etPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:alpha="50"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:text="zzzz"
-            android:textColor="@android:color/white"
-            android:textColorHint="?android:attr/colorButtonNormal" />
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_shadow_start_color"
+        android:text="log in"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/background_light" />
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardview_shadow_start_color"
-            android:text="log in"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light" />
-
-        <TextView
-            android:id="@+id/txtForgotPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="right"
-            android:text="Forgot Password ?"
-            android:textColorHint="@android:color/background_light" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txtForgotPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="right"
+        android:text="Forgot Password ?"
+        android:textColorHint="@android:color/background_light" />
+</LinearLayout>
 
 
 </LinearLayout>

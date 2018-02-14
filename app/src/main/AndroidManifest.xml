@@ -53,7 +53,7 @@
         </receiver>
 
         <activity android:name=".admin.admin_addMission" />
-        <activity android:name=".admin.admin_addSoldiers"></activity>
+        <activity android:name=".admin.admin_addSoldiers" />
         <activity android:name=".liveStream_Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,9 +61,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".showMissions">
-
-        </activity>
+        <activity android:name=".showMissions"></activity>
+        <activity android:name=".admin.admin_home"></activity>
     </application>
 
 </manifest>
